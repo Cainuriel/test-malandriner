@@ -9,6 +9,8 @@ export async function load() {
   let invalidsKeys = [];
   let missingKeys = [];
   let deletePodcasts = 0;
+//   let noTypeNumber = 0;
+  let errorMessage = "Hemos encontrado los siguientes errores: ";
   const correctKeys = [
     "number",
     "title",
@@ -62,19 +64,19 @@ export async function load() {
   }
 
   async function prevalidationData(episodes) {
+    let postValidate = [];
     for (let index = 0; index < episodes.length; index++) {
-      console.log(`episodes antes de validar`, episodes[index]);
+    //   console.log(`episodes antes de validar`, episodes[index]);
       const ok = await tests(episodes[index]);
-      console.log(`index`, index);
       if (!ok) {
-        episodes.splice(index, 1);
-        episodes = episodes;
-        console.log(`episodio borrado`, index);
+        console.log(`no ha pasado el test`, episodes[index]);
         deletePodcasts++;
+      } else {
+        postValidate.push(episodes[index])
       }
     }
-
-    return episodes;
+    //  console.log(`episodios validados`, postValidate);
+    return postValidate;
   }
 
   //   async function tests(ep) {
@@ -139,54 +141,53 @@ export async function load() {
 
   async function tests(ep) {
     
-
     let validKey = validateObjectKeys(ep);
     if (validKey !== null) {
-      allTextOk = false;
       invalidsKeys.push(validKey);
-      console.log(`invalidsKeys`, invalidsKeys);
+    //   console.log(`invalidsKeys`, invalidsKeys);
       return false;
     }
 
     let missingKey = missingObjectKeys(ep);
     if (missingKey !== null) {
-      allTextOk = false;
       missingKeys.push(missingKey);
-      console.log(`missingKey`, missingKeys);
+    //   console.log(`missingKey`, missingKeys);
       return false;
     }
 
-    let typeNumber = isDurationNumber(ep);
-    if (!typeNumber) {
-      return false
-    }
-
+    // let typeNumber = isDurationNumber(ep);
+    // if (!typeNumber) {
+    //     noTypeNumber++
+    //     // console.log(`errores de tipado en duration`, noTypeNumber);
+    //   return false
+    // }
+    // console.log(`ha pasado todas las pruebas`, ep);
     return true;
   }
 
   async function processEpisodes(episodes) {
-    if (!episodes || episodes.length === 0) return;
-
-    episodes = await prevalidationData(episodes);
-    console.log(`episodes validados`, episodes);
+    // if (!episodes || episodes.length === 0) return;
+    let filterEpisodes = await prevalidationData(episodes);
+    //  console.log(`episodes validados`, filterEpisodes);
+    if(filterEpisodes.length !== 0) {
     // Convertir duration a números y ordenar episodios por number
-    episodes.forEach((ep) => (ep.duration = parseInt(ep.duration, 10)));
-    episodes.sort((a, b) => parseInt(a.number, 10) - parseInt(b.number, 10));
+    filterEpisodes.forEach((ep) => (ep.duration = parseInt(ep.duration, 10)));
+    filterEpisodes.sort((a, b) => parseInt(a.number, 10) - parseInt(b.number, 10));
     // Calcular el siguiente episode number
     const nextEpisodeNumber =
-      parseInt(episodes[episodes.length - 1].number, 10) + 1;
+      parseInt(filterEpisodes[filterEpisodes.length - 1].number, 10) + 1;
 
     // Calcular la suma total de duration
-    const totalDuration = episodes.reduce((sum, ep) => sum + ep.duration, 0);
+    const totalDuration = filterEpisodes.reduce((sum, ep) => sum + ep.duration, 0);
 
     // Encontrar el episode más corto
-    const shortestEpisode = episodes.reduce(
+    const shortestEpisode = filterEpisodes.reduce(
       (shortest, ep) => (ep.duration < shortest.duration ? ep : shortest),
-      episodes[0]
+      filterEpisodes[0]
     );
 
     // Crear una lista aleatoria y seleccionar titles de episodios que sumen menos de 2 horas
-    const shuffledEpisodes = episodes.sort(() => Math.random() - 0.5);
+    const shuffledEpisodes = filterEpisodes.sort(() => Math.random() - 0.5);
     const twoHourLimit = 2 * 60 * 60; // 2 horas en segundos
     let durationSum = 0;
     const selectedTitles = [];
@@ -203,12 +204,33 @@ export async function load() {
     // console.log("Number of the shortest episode:", shortestEpisode.number);
     // console.log("Titles below 2 hours:", selectedTitles);
 
+    if(invalidsKeys.length > 0) {
+        errorMessage = errorMessage +  `${invalidsKeys.length} posts con keys incorrectas `
+    }
+
+    if(missingKeys.length > 0) {
+        errorMessage = errorMessage +  `${missingKeys.length} posts con keys faltantes `
+    }
+
+    // if(noTypeNumber> 0) {
+    //     errorMessage = errorMessage +  `${noTypeNumber} posts con error de tipado `
+    // }
+
     return {
       nextEpisodeNumber,
       totalDuration,
       shortestEpisodeNumber: shortestEpisode.number,
       selectedTitles,
+      errorReport: {
+        totalErrors: errorMessage,
+        haveErrors: deletePodcasts
+
+      }
     };
+    } else {
+       return {todosLosDatosSonInvalidos: "Lamentablemente no hemos recibido ningún dato correctamente"}
+    }
+
   }
 
   const podcast = await fetchEpisodes();

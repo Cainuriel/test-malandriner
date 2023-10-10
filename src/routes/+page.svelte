@@ -1,7 +1,7 @@
 <script>
 export let data;
 
-// console.log(`data`, data);
+//  console.log(`data`, data);
 </script>
 
 
@@ -18,6 +18,10 @@ export let data;
 	</ul>
 </aside> -->
 
+{#if data.result.todosLosDatosSonInvalidos}
+<h2>{data.result.todosLosDatosSonInvalidos}</h2> 
+{:else}
+<div>
 <p>Número del siguiente episodio:</p>
 <p><strong>{data.result.nextEpisodeNumber}</strong></p>
 <p>Duración total de todos los episodios:</p>
@@ -28,10 +32,28 @@ export let data;
 {#each data.result.selectedTitles as title}
  <p><strong>{title}</strong></p>   
 {/each}
+</div>
+{#if data.result.errorReport.haveErrors > 0}
+ <div>
+    <p>No se han tenido en cuenta {data.result.errorReport.haveErrors} posts.</p>
+  <p class="errors">{data.result.errorReport.totalErrors}</p>
+</div>
+{:else}
+ <p>La api ha devuelto todos los posts correctamente</p>
+{/if}
+{/if}
+
+
+
+
 
 
 <style>
     h1 {
         text-align: center;
+    }
+
+    .errors {
+        color: red;
     }
 </style>

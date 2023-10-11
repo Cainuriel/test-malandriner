@@ -75,69 +75,69 @@ export async function load() {
         postValidate.push(episodes[index])
       }
     }
-    //  console.log(`episodios validados`, postValidate);
+     console.log(`episodios validados`, postValidate);
     return postValidate;
   }
 
-  //   async function tests(ep) {
+    // async function tests(ep) {
 
-  //  test("Si es un array los episodios", () => {
-  //   assert.ok(Array.isArray(episodes));
+    //         // test("Si es un array los episodios", () => {
+    //         //     assert.ok(Array.isArray(ep));
 
-  // });
+    //         // });
 
-  //       test('Si son las claves correctas', () => {
-  //         // const validObject = {
-  //         //   number: 1,
-  //         //   title: "Episodio 1",
-  //         //   excerpt: "Descripción del episodio 1",
-  //         //   published_at: "2023-10-10",
-  //         //   duration: 30,
-  //         //   id: "abc123",
-  //         // };
+    //     test('Si son las claves correctas', () => {
+    //       // const validObject = {
+    //       //   number: 1,
+    //       //   title: "Episodio 1",
+    //       //   excerpt: "Descripción del episodio 1",
+    //       //   published_at: "2023-10-10",
+    //       //   duration: 30,
+    //       //   id: "abc123",
+    //       // };
 
-  //         // const invalidObject = {
-  //         //   number: 2,
-  //         //   title: "Episodio 2",
-  //         //   excerpt: "Descripción del episodio 2",
-  //         //   // Falta "published_at"
-  //         //   duration: 45,
-  //         //   id: "def456",
-  //         //   extraKey: "extraValue", // Clave adicional
-  //         // };
+    //       // const invalidObject = {
+    //       //   number: 2,
+    //       //   title: "Episodio 2",
+    //       //   excerpt: "Descripción del episodio 2",
+    //       //   // Falta "published_at"
+    //       //   duration: 45,
+    //       //   id: "def456",
+    //       //   extraKey: "extraValue", // Clave adicional
+    //       // };
 
-  //         let result = validateObjectKeys(ep);
-  //         assert.equal(result, null);
+    //       let result = validateObjectKeys(ep);
+    //       assert.equal(result, null);
 
-  //       });
+    //     });
 
-  //     test('Valida si la clave "duration" es de tipo número', () => {
-  //       // const validObject = {
-  //       //   number: 1,
-  //       //   title: "Episodio 1",
-  //       //   excerpt: "Descripción del episodio 1",
-  //       //   published_at: "2023-10-10",
-  //       //   duration: 30,
-  //       //   id: "abc123",
-  //       // };
+    //   test('Valida si la clave "duration" es de tipo número', () => {
+    //     // const validObject = {
+    //     //   number: 1,
+    //     //   title: "Episodio 1",
+    //     //   excerpt: "Descripción del episodio 1",
+    //     //   published_at: "2023-10-10",
+    //     //   duration: 30,
+    //     //   id: "abc123",
+    //     // };
 
-  //       // const invalidObject = {
-  //       //   number: 2,
-  //       //   title: "Episodio 2",
-  //       //   excerpt: "Descripción del episodio 2",
-  //       //   published_at: "2023-10-15",
-  //       //   duration: "45",
-  //       //   id: "def456",
-  //       // };
-  //     //   console.log(
-  //     //     `isDurationNUmber(ep)`,
-  //     //     isDurationNumber(ep)
-  //     //   );
-  //       let result = isDurationNumber(ep);
-  //       assert.ok(result);
+    //     // const invalidObject = {
+    //     //   number: 2,
+    //     //   title: "Episodio 2",
+    //     //   excerpt: "Descripción del episodio 2",
+    //     //   published_at: "2023-10-15",
+    //     //   duration: "45",
+    //     //   id: "def456",
+    //     // };
+    //   //   console.log(
+    //   //     `isDurationNUmber(ep)`,
+    //   //     isDurationNumber(ep)
+    //   //   );
+    //     let result = isDurationNumber(ep);
+    //     assert.ok(result);
 
-  //     });
-  //   }
+    //   });
+    // }
 
   async function tests(ep) {
     

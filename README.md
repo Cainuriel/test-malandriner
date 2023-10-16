@@ -1,3 +1,22 @@
+# reto-testing-contra-terrible-iñiguez
+
+El proyecto llama por defecto a la URL ``` API_TERRIBLE =
+    "https://tormenta-codigo-app-terrible.vercel.app/api/podcast/terrible" ```
+
+Si desea cambiar la API dirigase al archivo ``` routes/+page.server.js ```, en la función:
+```
+ async function fetchEpisodes() {
+    try {
+      const response = await fetch(API_TERRIBLE);
+      const responseData = await response.json();
+      return responseData.data;
+    } catch (error) {
+      console.error("Error fetching the episodes:", error);
+      return [];
+    }
+  }
+
+ ``` 
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).

@@ -4,7 +4,7 @@ El proyecto llama por defecto a la URL ``` API_TERRIBLE =
     "https://tormenta-codigo-app-terrible.vercel.app/api/podcast/terrible" ```
 
 Si desea cambiar la API dirigase al archivo ``` routes/+page.server.js ```, en la función:
-```
+```javascript
  async function fetchEpisodes() {
     try {
       const response = await fetch(API_TERRIBLE);
